@@ -1,8 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Req, Res } from '@nestjs/common';
-import { rejects } from 'assert';
-import { resolve } from 'path';
-const XMLHttpRequest = require('xhr2');
+import * as XMLHttpRequest from 'xhr2';
 
 @Injectable()
 export class AppService {
