@@ -28,5 +28,5 @@ export class AppService {
       xhr.send(data);
     });
     return promise;
-  }
+  };
 }
