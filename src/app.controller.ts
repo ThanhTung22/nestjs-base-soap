@@ -11,7 +11,9 @@ export class AppController {
 
   @Post()
   postXmlRequest(@Req() req): any {
-    const data = this.bodyBase.bodyXml(req.body.field);
+    const number = req.body.data.number;
+    const tag = req.body.data.tag;
+    const data = this.bodyBase.bodyXml(number,tag);
     const result = this.appService.sendHttpRequest('POST', process.env.URL, data);
     return result;
   };
