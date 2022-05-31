@@ -1,20 +1,18 @@
-import { Controller, Get, Post } from '@nestjs/common';
+import { Controller, Get, Post, Req } from '@nestjs/common';
 import { AppService } from './app.service';
+import { BodyBase } from './config/body.xml.base';
+import * as dotenv from "dotenv";
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) { }
+  constructor(private readonly appService: AppService, private readonly bodyBase: BodyBase) {
+    dotenv.config();
+  };
 
   @Post()
-  postXmlRequest(): any {
-    const data = `<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
-    <soap:Body>
-      <NumberToWords xmlns="http://www.dataaccess.com/webservicesserver/">
-        <ubiNum>2000</ubiNum>
-      </NumberToWords>
-    </soap:Body>
-  </soap:Envelope>`;
-    const result = this.appService.sendHttpRequest('POST','https://www.dataaccess.com/webservicesserver/NumberConversion.wso',data);
+  postXmlRequest(@Req() req): any {
+    const data = this.bodyBase.bodyXml(req.body.field);
+    const result = this.appService.sendHttpRequest('POST', process.env.URL, data);
     return result;
   };
 }
