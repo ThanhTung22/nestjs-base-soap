@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { BodyBase } from './config/body.xml.base';
+import { BodyBase } from './until/body.xml.base';
 
 @Module({
   imports: [],

@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import * as XMLHttpRequest from 'xhr2';
+import { parseString } from "xml2js";
 
 @Injectable()
 export class AppService {
@@ -13,19 +14,23 @@ export class AppService {
         xhr.setRequestHeader('Content-Type', 'text/xml; charset=utf-8');
       };
 
+      xhr.send(data);
+
       xhr.onload = () => {
         if (xhr.status >= 400) {
           reject(xhr.response);
         } else {
-          resolve(xhr.response);
+          const data = xhr.response;
+          parseString(data, { mergeAttrs: true }, (err, jsonData) => {
+            resolve(jsonData);
+          });
+          // resolve(data);
         }
       };
 
       xhr.onerror = () => {
         reject('Something went wrong!');
       };
-
-      xhr.send(data);
     });
     return promise;
   };
